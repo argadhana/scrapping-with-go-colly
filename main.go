@@ -14,8 +14,7 @@ func main() {
 	})
 	scrapp.OnHTML("div.listo", func(e *colly.HTMLElement) {
 		e.ForEach("div.bs", func(_ int, e *colly.HTMLElement) {
-			var title, con, rating string
-
+			var title, con, rating, image, tipe, link string
 			title = e.ChildText("div.tt")
 
 			if title == "" {
@@ -27,12 +26,27 @@ func main() {
 				return
 			}
 
-			rating = e.ChildText("div.rating")
+			rating = e.ChildText("i")
 			if rating == "" {
 				return
 			}
 
-			fmt.Printf("Judul Komik: %s \nCH: %s \nRating: %s \n", title, con, rating)
+			image = e.ChildAttr("img", "src")
+			if image == "" {
+				return
+			}
+
+			tipe = e.ChildText("span.type")
+			if tipe == "" {
+				return
+			}
+
+			link = e.ChildAttr("a", "href")
+			if link == "" {
+				return
+			}
+
+			fmt.Printf("Judul Komik: %s \nCH: %s \nRating: %s \nImage: %s \nTipe: %s \nLink: %s \n\n", title, con, rating, image, tipe, link)
 
 		})
 	})
